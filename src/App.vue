@@ -25,6 +25,7 @@
           >
             show modal w/ form
           </button>
+          
           <modals
             title="modal with form"
             v-show="secondModal.show"

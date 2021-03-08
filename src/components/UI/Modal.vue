@@ -2,10 +2,10 @@
   <transition name="modal">
     <div
       class="modal__wrapper"
-      @click="$emit('close')"
       @keyup.escape="$emit('close')"
+      @mousedown.self="$emit('close')"
     >
-      <div class="modal-content" @click.stop>
+      <div class="modal-content">
         <!-- header -->
         <div class="modal-header">
           <span class="modal-title"> {{ title }} </span>
@@ -32,13 +32,13 @@ export default {
   mounted() {
     document.body.addEventListener("keyup", (e) => {
       if (e.keyCode === 27) {
-        this.$emit("close");
+        this.$emit("close")
       }
-    });
+    })
   },
   computed: {},
   methods: {},
-};
+}
 </script>
 
 <style lang="scss" scoped>
