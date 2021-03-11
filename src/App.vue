@@ -25,7 +25,7 @@
           >
             show modal w/ form
           </button>
-          
+
           <modals
             title="modal with form"
             v-show="secondModal.show"
@@ -71,6 +71,7 @@
             v-show="modalValidate"
             @close="modalValidate = false"
             title="Modal Form + Validate"
+            :isModalShown="modalValidate"
           >
           </modalValidate>
         </div>
@@ -80,8 +81,8 @@
 </template>
 
 <script>
-import modals from "@/components/UI/Modal.vue";
-import modalValidate from "@/components/ModalValidate.vue";
+import modals from "@/components/UI/Modal.vue"
+import modalValidate from "@/components/ModalValidate.vue"
 
 export default {
   components: { modals, modalValidate },
@@ -94,21 +95,21 @@ export default {
         email: "",
       },
       modalValidate: false,
-    };
+    }
   },
   methods: {
     submitSecondForm() {
       console.log({
         name: this.secondModal.name,
         email: this.secondModal.email,
-      });
+      })
 
-      this.secondModal.name = "";
-      this.secondModal.email = "";
-      this.secondModal.show = false;
+      this.secondModal.name = ""
+      this.secondModal.email = ""
+      this.secondModal.show = false
     },
   },
-};
+}
 </script>
 
 <style></style>
