@@ -11,10 +11,13 @@
           <span class="modal-title"> {{ title }} </span>
           <span class="button-close" @click="$emit('close')">×</span>
         </div>
-
         <!-- body -->
         <div class="modal-body">
-          <slot name="body">Default</slot>
+          <slot name="body">Default Body</slot>
+        </div>
+        <!-- footer -->
+        <div class="modal-footer" v-if="$slots.footer">
+          <slot name="footer">Default Footer</slot>
         </div>
       </div>
     </div>
@@ -67,12 +70,12 @@ export default {
 .modal-content {
   position: relative;
   max-width: 600px;
-  padding: 20px 18px;
   background-color: #fff;
   border: 1px solid #dcdfe6;
   transition: all 0.2s ease;
   border-radius: 8px;
   z-index: 999;
+
   overflow: hidden;
   @media screen and (min-width: 900px) {
     min-width: 500px;
@@ -82,15 +85,22 @@ export default {
   display: flex;
   align-self: center;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding: 20px 18px 20px 18px;
   span {
     font-size: 24px;
   }
+
   .button-close {
     cursor: pointer;
   }
 }
 .modal-body {
   text-align: center;
+  padding: 20px 18px 20px 18px;
+}
+.modal-footer {
+  background-color: #f3f3f3;
+  text-align: center;
+  padding: 20px 20px;
 }
 </style>

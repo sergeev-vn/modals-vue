@@ -1,5 +1,5 @@
 <template>
-  <modal title="modal with form">
+  <modal title="modal with registration">
     <template v-slot:body>
       <form @submit.prevent="onSubmit">
         <div class="row">
@@ -52,16 +52,48 @@
           </div>
         </div>
         <div class="row">
-          <button class="btn btnPrimary">submit form!</button>
+          <div
+            class="form-item"
+            :class="{ errorInput: v$.repeatPassword.$error }"
+          >
+            <label>
+              Repeat password:
+              <p
+                class="errorText"
+                v-if="
+                  v$.repeatPassword.sameAs.$invalid && v$.repeatPassword.$error
+                "
+              >
+                Passwords must be identical.
+              </p>
+              <!-- Repeat password -->
+              <input
+                type="password"
+                class="input"
+                v-model.trim="v$.repeatPassword.$model"
+                :class="{ error: v$.repeatPassword.$error }"
+                @change="v$.repeatPassword.$touch"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn btnPrimary">Registration!</button>
         </div>
       </form>
+    </template>
+    <template v-slot:footer>
+      <a class="link" href="#" @click.prevent="$emit('changePopup')"
+        >У меня уже есть аккаунт</a
+      >
     </template>
   </modal>
 </template>
 
 <script>
 import modal from "@/components/UI/Modal.vue"
-import { required, minLength, email } from "@vuelidate/validators"
+import { required, minLength, email, sameAs } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
 
 export default {
@@ -82,10 +114,6 @@ export default {
   setup: () => ({ v$: useVuelidate() }),
   validations() {
     return {
-      name: {
-        required,
-        minLength: minLength(4),
-      },
       email: {
         required,
         email,
@@ -102,8 +130,6 @@ export default {
   watch: {
     isModalShown() {
       this.v$.$reset()
-      this.name = ""
-      this.email = ""
       this.email = ""
       this.password = ""
       this.repeatPassword = ""
@@ -115,7 +141,6 @@ export default {
 
       if (!this.v$.$invalid) {
         let user = {
-          name: this.name,
           email: this.email,
           password: this.password,
           repeatPassword: this.repeatPassword,

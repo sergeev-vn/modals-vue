@@ -4,19 +4,33 @@
       <section>
         <div class="container">
           <!-- modal w/  authorization-->
+          <button class="btn btnPrimary" @click="modalLogIn = !modalLogIn">
+            Log In
+          </button>
+          <modalLogIn
+            v-show="modalLogIn"
+            @close="modalLogIn = false"
+            title="Login"
+            :isModalShown="modalLogIn"
+            @change-popup="changePopup"
+          >
+          </modalLogIn>
+          <br /><br />
+          <!-- modal w/  registration-->
           <button
             class="btn btnPrimary"
-            @click="modalValidate = !modalValidate"
+            @click="modalRegistration = !modalRegistration"
           >
-            Аuthorization
+            Registration
           </button>
-          <modalAuthorizaion
-            v-show="modalValidate"
-            @close="modalValidate = false"
-            title="Аuthorization"
-            :isModalShown="modalValidate"
+          <modalRegistration
+            v-show="modalRegistration"
+            @close="modalRegistration = false"
+            title="Registration"
+            :isModalShown="modalRegistration"
+            @change-popup="changePopup"
           >
-          </modalAuthorizaion>
+          </modalRegistration>
         </div>
       </section>
     </div>
@@ -24,32 +38,21 @@
 </template>
 
 <script>
-import modals from "@/components/UI/Modal.vue"
-import modalAuthorizaion from "@/components/ModalAuthorizaion.vue"
+import modalLogIn from "@/components/ModalLogIn.vue"
+import modalRegistration from "@/components/ModalRegistration.vue"
 
 export default {
-  components: { modals, modalAuthorizaion },
+  components: { modalLogIn, modalRegistration },
   data() {
     return {
-      firstModal: false,
-      secondModal: {
-        show: false,
-        name: "",
-        email: "",
-      },
-      modalValidate: false,
+      modalLogIn: false,
+      modalRegistration: false,
     }
   },
   methods: {
-    submitSecondForm() {
-      console.log({
-        name: this.secondModal.name,
-        email: this.secondModal.email,
-      })
-
-      this.secondModal.name = ""
-      this.secondModal.email = ""
-      this.secondModal.show = false
+    changePopup() {
+      this.modalLogIn = !this.modalLogIn
+      this.modalRegistration = !this.modalRegistration
     },
   },
 }

@@ -3,30 +3,6 @@
     <template v-slot:body>
       <form @submit.prevent="onSubmit">
         <div class="row">
-          <!-- name -->
-          <div class="form-item" :class="{ errorInput: v$.name.$error }">
-            <label>
-              Name:
-              <p
-                class="errorText"
-                v-if="v$.name.required.$invalid && v$.name.$error"
-              >
-                Field is required!
-              </p>
-              <p class="errorText" v-if="v$.name.minLength.$invalid">
-                Name must have at least {{ v$.name.minLength.$params.min }}!
-              </p>
-              <!-- email -->
-              <input
-                class="input"
-                v-model="name"
-                :class="{ error: v$.name.$error }"
-                @change="v$.name.$touch"
-              />
-            </label>
-          </div>
-        </div>
-        <div class="row">
           <div class="form-item" :class="{ errorInput: v$.email.$error }">
             <label>
               Email:
@@ -76,43 +52,21 @@
           </div>
         </div>
         <div class="row">
-          <div
-            class="form-item"
-            :class="{ errorInput: v$.repeatPassword.$error }"
-          >
-            <label>
-              Repeat password:
-              <p
-                class="errorText"
-                v-if="
-                  v$.repeatPassword.sameAs.$invalid && v$.repeatPassword.$error
-                "
-              >
-                Passwords must be identical.
-              </p>
-              <!-- Repeat password -->
-              <input
-                type="password"
-                class="input"
-                v-model.trim="v$.repeatPassword.$model"
-                :class="{ error: v$.repeatPassword.$error }"
-                @change="v$.repeatPassword.$touch"
-                autocomplete="off"
-              />
-            </label>
-          </div>
-        </div>
-        <div class="row">
-          <button class="btn btnPrimary">submit form!</button>
+          <button class="btn btnPrimary">Log In!</button>
         </div>
       </form>
+    </template>
+    <template v-slot:footer>
+      <a class="link" href="#" @click.prevent="$emit('changePopup')"
+        >Мне нужен аккаунт</a
+      >
     </template>
   </modal>
 </template>
 
 <script>
 import modal from "@/components/UI/Modal.vue"
-import { required, minLength, email, sameAs } from "@vuelidate/validators"
+import { required, minLength, email } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
 
 export default {
@@ -127,16 +81,11 @@ export default {
       name: "",
       email: "",
       password: "",
-      repeatPassword: "",
     }
   },
   setup: () => ({ v$: useVuelidate() }),
   validations() {
     return {
-      name: {
-        required,
-        minLength: minLength(4),
-      },
       email: {
         required,
         email,
@@ -145,18 +94,13 @@ export default {
         required,
         minLength: minLength(6),
       },
-      repeatPassword: {
-        sameAs: sameAs(this.password),
-      },
     }
   },
   watch: {
     isModalShown() {
       this.v$.$reset()
-      this.name = ""
       this.email = ""
       this.password = ""
-      this.repeatPassword = ""
     },
   },
   methods: {
@@ -165,10 +109,8 @@ export default {
 
       if (!this.v$.$invalid) {
         let user = {
-          name: this.name,
           email: this.email,
           password: this.password,
-          repeatPassword: this.repeatPassword,
         }
         console.log(user)
         this.$emit("close")
